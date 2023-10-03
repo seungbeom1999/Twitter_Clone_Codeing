@@ -6,6 +6,8 @@ import Login from "./routes/Login";
 import CreateAccount from "./routes/CreateAccount";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import { useEffect, useState } from "react";
+import LoadingScreen from "./component/LoadingScreen";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,27 @@ const router = createBrowserRouter([
   },
 ]);
 
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const init = async () => {
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  return (
+    <>
+      <GlobalStyles />
+      {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+    </>
+  );
+}
+
+export default App;
+
 const GlobalStyles = createGlobalStyle`
   ${reset};
   *{
@@ -40,14 +63,3 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'system-ui', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 `;
-
-function App() {
-  return (
-    <>
-      <GlobalStyles />
-      <RouterProvider router={router} />
-    </>
-  );
-}
-
-export default App;
