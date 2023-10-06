@@ -11,6 +11,7 @@ import {
   Title,
   Wrapper,
 } from "../component/AuthComponents";
+import GithubButton from "../component/GithubButton";
 
 function CreateAccount() {
   const navigate = useNavigate();
@@ -95,6 +96,7 @@ function CreateAccount() {
       <Switcher>
         Don't have an account? <Link to="/login">Log in &rarr;</Link>
       </Switcher>
+      <GithubButton />
     </Wrapper>
   );
 }
