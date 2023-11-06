@@ -1,13 +1,20 @@
 import { auth } from "../Firebase";
+import { Wrapper } from "../component/AuthComponents";
+import PostTweetForm from "../component/PostTweetForm";
 
 function Home() {
   const logOut = () => {
     auth.signOut();
   };
   return (
-    <h1>
-      <button onClick={logOut}>Log Out</button>
-    </h1>
+    <>
+      <Wrapper>
+        <PostTweetForm />
+      </Wrapper>
+      <h1>
+        <button onClick={logOut}>Log Out</button>
+      </h1>
+    </>
   );
 }
 
