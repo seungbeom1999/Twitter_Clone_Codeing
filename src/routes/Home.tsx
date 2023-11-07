@@ -1,21 +1,22 @@
-import { auth } from "../Firebase";
-import { Wrapper } from "../component/AuthComponents";
+import styled from "styled-components";
 import PostTweetForm from "../component/PostTweetForm";
+import TimeLine from "../component/TimeLine";
 
 function Home() {
-  const logOut = () => {
-    auth.signOut();
-  };
   return (
     <>
       <Wrapper>
         <PostTweetForm />
+        <TimeLine />
       </Wrapper>
-      <h1>
-        <button onClick={logOut}>Log Out</button>
-      </h1>
     </>
   );
 }
 
 export default Home;
+
+export const Wrapper = styled.div`
+  display: grid;
+  gap: 50px;
+  grid-template-rows: 1fr 5fr;
+`;

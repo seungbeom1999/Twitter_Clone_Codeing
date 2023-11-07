@@ -6,7 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function PostTweetForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [tweet, setTweet] = useState("");
+  const [tweets, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
@@ -18,24 +18,22 @@ export default function PostTweetForm() {
       setFile(files[0]);
     }
   };
-
+  const TestUser = auth;
+  console.log(TestUser);
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const user = auth.currentUser;
-    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+    if (!user || isLoading || tweets === "" || tweets.length > 180) return;
     try {
       setIsLoading(true);
       const doc = await addDoc(collection(db, "tweets"), {
-        tweet,
-        createAt: Date.now(),
+        tweets,
+        createdAt: Date.now(),
         userName: user.displayName || "Anonymous",
         userId: user.uid,
       });
       if (file) {
-        const locationRef = ref(
-          storage,
-          `tweets/${user.uid}-${user.displayName}/${doc.id}`
-        );
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, file);
         const url = await getDownloadURL(result.ref);
         await updateDoc(doc, {
@@ -56,7 +54,7 @@ export default function PostTweetForm() {
         rows={5}
         maxLength={180}
         onChange={onChange}
-        value={tweet}
+        value={tweets}
         placeholder="What is happening"
       />
       <AttachFileButton htmlFor="file">
@@ -91,11 +89,10 @@ const TextArea = styled.textarea`
   background-color: black;
   width: 100%;
   resize: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   &::placeholder {
     font-size: 16px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-      sans-serif;
   }
   &:focus {
     outline: none;
